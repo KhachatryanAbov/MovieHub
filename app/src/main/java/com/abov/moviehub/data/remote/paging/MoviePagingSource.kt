@@ -3,8 +3,8 @@ package com.abov.moviehub.data.remote.paging
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.abov.moviehub.data.remote.ApiService
+import com.abov.moviehub.data.remote.mapper.MovieMapper
 import com.abov.moviehub.domain.model.Movie
-import kotlinx.coroutines.delay
 
 class MoviePagingSource(
     private val apiService: ApiService
@@ -13,7 +13,7 @@ class MoviePagingSource(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Movie> {
         val page = params.key ?: 0
         return try {
-            val response = apiService.getMoviesPage(page).map { it.toDomain() }
+            val response = apiService.getMoviesPage(page).map { MovieMapper.toDomain(it) }
             val nextKey = if (response.isEmpty()) null else page + 1
             LoadResult.Page(
                 data = response,

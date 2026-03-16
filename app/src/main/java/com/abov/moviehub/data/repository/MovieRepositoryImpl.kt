@@ -4,6 +4,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.liveData
 import com.abov.moviehub.data.remote.ApiService
+import com.abov.moviehub.data.remote.mapper.MovieMapper
 import com.abov.moviehub.data.remote.paging.MoviePagingSource
 import com.abov.moviehub.domain.model.Movie
 import com.abov.moviehub.domain.repository.MovieRepository
@@ -25,6 +26,6 @@ class MovieRepositoryImpl(
 
     override suspend fun getMovieDetail(id: Int): Movie =
         withContext(Dispatchers.IO) {
-            apiService.getMovieDetail(id).toDomain()
+            MovieMapper.toDomain(apiService.getMovieDetail(id))
         }
 }

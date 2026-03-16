@@ -1,7 +1,5 @@
 package com.abov.moviehub.data.remote.dto
 
-import com.abov.moviehub.domain.model.Movie
-
 data class MovieDto(
     val id: Int,
     val name: String,
@@ -13,21 +11,7 @@ data class MovieDto(
     val image: ImageDto?,
     val rating: RatingDto?,
     val summary: String?
-) {
-    fun toDomain(): Movie = Movie(
-        id = id,
-        name = name,
-        imageMediumUrl = image?.medium,
-        imageOriginalUrl = image?.original,
-        rating = rating?.average,
-        summary = summary,
-        genres = genres.orEmpty(),
-        language = language,
-        status = status,
-        premiered = premiered,
-        networkName = network?.name
-    )
-}
+)
 
 data class NetworkDto(
     val id: Int?,
