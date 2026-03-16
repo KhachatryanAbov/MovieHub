@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/content_scroll"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/spacing_large">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/image_poster"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:contentDescription="@string/movies_details_poster_description"
+                android:maxHeight="@dimen/poster_max_height_large"
+                android:scaleType="fitCenter"
+                app:shapeAppearanceOverlay="@style/ShapeAppearance.MovieHub.Poster"
+                tools:src="@tools:sample/avatars" />
+
+            <TextView
+                android:id="@+id/label_title"
+                style="@style/TextAppearance.MovieHub.SectionLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_large"
+                android:text="@string/movies_field_title" />
+
+            <TextView
+                android:id="@+id/text_title"
+                style="@style/TextAppearance.MovieHub.SectionValue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="Movie title" />
+
+            <TextView
+                android:id="@+id/label_rating"
+                style="@style/TextAppearance.MovieHub.SectionLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_medium"
+                android:text="@string/movies_field_rating" />
+
+            <TextView
+                android:id="@+id/text_rating"
+                style="@style/TextAppearance.MovieHub.SectionValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="8.8" />
+
+            <TextView
+                android:id="@+id/label_language"
+                style="@style/TextAppearance.MovieHub.SectionLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_medium"
+                android:text="@string/movies_field_language" />
+
+            <TextView
+                android:id="@+id/text_language"
+                style="@style/TextAppearance.MovieHub.SectionValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="English" />
+
+            <TextView
+                android:id="@+id/label_premiered"
+                style="@style/TextAppearance.MovieHub.SectionLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_medium"
+                android:text="@string/movies_field_premiered" />
+
+            <TextView
+                android:id="@+id/text_premiered"
+                style="@style/TextAppearance.MovieHub.SectionValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="2024" />
+
+            <TextView
+                android:id="@+id/label_summary"
+                style="@style/TextAppearance.MovieHub.SectionLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_xlarge"
+                android:text="@string/movies_field_summary" />
+
+            <TextView
+                android:id="@+id/text_summary"
+                style="@style/TextAppearance.MovieHub.SectionValue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_small"
+                android:lineSpacingExtra="@dimen/spacing_xsmall"
+                tools:text="Summary text..." />
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/layout_error"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/spacing_xlarge"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/text_error"
+            style="@style/TextAppearance.MovieHub.StateText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/error_generic_message"
+            tools:text="@string/error_generic_message" />
+
+        <Button
+            android:id="@+id/button_retry"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_medium"
+            android:minWidth="@dimen/button_min_width"
+            android:text="@string/common_retry" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

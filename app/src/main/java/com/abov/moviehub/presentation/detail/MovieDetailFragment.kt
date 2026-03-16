@@ -1,0 +1,95 @@
+package com.abov.moviehub.presentation.detail
+
+import android.os.Bundle
+import android.text.Html
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.navArgs
+import coil.load
+import com.abov.moviehub.R
+import com.abov.moviehub.databinding.FragmentMovieDetailBinding
+import dagger.hilt.android.AndroidEntryPoint
+
+@AndroidEntryPoint
+class MovieDetailFragment : Fragment() {
+
+    private var _binding: FragmentMovieDetailBinding? = null
+    private val binding get() = _binding!!
+
+    private val viewModel: MovieDetailViewModel by viewModels()
+    private val args: MovieDetailFragmentArgs by navArgs()
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentMovieDetailBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        setupListeners()
+        observeUiState()
+
+        if (savedInstanceState == null) {
+            viewModel.loadMovie(args.movieId)
+        }
+    }
+
+    private fun setupListeners() {
+        binding.buttonRetry.setOnClickListener {
+            viewModel.loadMovie(args.movieId)
+        }
+    }
+
+    private fun observeUiState() {
+        viewModel.uiState.observe(viewLifecycleOwner) { state ->
+            renderState(state)
+        }
+    }
+
+    private fun renderState(state: MovieDetailUiState) = with(binding) {
+        progressBar.isVisible = state.isLoading
+        layoutError.isVisible = state.errorMessage != null && state.movie == null
+        contentScroll.isVisible = state.movie != null
+
+        textError.text = state.errorMessage ?: ""
+
+        state.movie?.let { movie ->
+            imagePoster.load(movie.imageOriginalUrl ?: movie.imageMediumUrl) {
+                crossfade(true)
+                placeholder(R.drawable.ic_placeholder)
+                error(R.drawable.ic_placeholder)
+            }
+
+            textTitle.text = movie.name
+            textRating.text = movie.rating?.let { getString(R.string.movies_rating_format, "%.1f".format(it)) } ?: getString(R.string.common_not_available)
+            textLanguage.text = movie.language.orFallback()
+            textPremiered.text = movie.premiered.orFallback()
+            textSummary.text = Html.fromHtml(
+                movie.summary.orEmpty(),
+                Html.FROM_HTML_MODE_LEGACY
+            )
+        }
+    }
+
+    private fun String?.orFallback(): String {
+        return if (this.isNullOrBlank()) {
+            getString(R.string.common_not_available)
+        } else {
+            this
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+}

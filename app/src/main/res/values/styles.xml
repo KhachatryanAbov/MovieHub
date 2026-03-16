@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="ShapeAppearance.MovieHub.Poster" parent="@style/ShapeAppearance.Material3.Corner.Medium">
+        <item name="cornerSize">@dimen/poster_corner_radius</item>
+    </style>
+
+    <style name="TextAppearance.MovieHub.SectionLabel" parent="@style/TextAppearance.Material3.TitleMedium">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+        <item name="android:textSize">@dimen/text_size_label</item>
+    </style>
+
+    <style name="TextAppearance.MovieHub.SectionValue" parent="@style/TextAppearance.Material3.BodyMedium">
+        <item name="android:textColor">?attr/colorOnSurface</item>
+        <item name="android:textSize">@dimen/text_size_body</item>
+    </style>
+
+    <style name="TextAppearance.MovieHub.BodySecondary" parent="@style/TextAppearance.Material3.BodySmall">
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+        <item name="android:textSize">@dimen/text_size_body_small</item>
+    </style>
+
+    <style name="TextAppearance.MovieHub.StateText" parent="@style/TextAppearance.Material3.BodyLarge">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+        <item name="android:textSize">@dimen/text_size_body</item>
+    </style>
+</resources>

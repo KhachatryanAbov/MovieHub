@@ -1,3 +1,32 @@
 <resources>
+
+    <!-- App -->
     <string name="app_name">MovieHub</string>
+
+    <!-- Screen titles -->
+    <string name="movies_list_title">Movies</string>
+    <string name="movies_details_title">Movie Details</string>
+
+    <!-- Empty / common -->
+    <string name="movies_list_empty">No movies found</string>
+    <string name="common_not_available">N/A</string>
+    <string name="common_retry">Retry</string>
+
+    <!-- Accessibility -->
+    <string name="movies_list_poster_description">Movie poster thumbnail</string>
+    <string name="movies_details_poster_description">Movie poster</string>
+
+    <!-- Labels -->
+    <string name="movies_field_title">Title</string>
+    <string name="movies_field_rating">Rating</string>
+    <string name="movies_field_language">Language</string>
+    <string name="movies_field_premiered">Premiered</string>
+    <string name="movies_field_summary">Summary</string>
+
+    <!-- Formatting -->
+    <string name="movies_rating_format">Rating: %1$s</string>
+
+    <!-- Errors -->
+    <string name="error_generic_message">Something went wrong</string>
+
 </resources>
