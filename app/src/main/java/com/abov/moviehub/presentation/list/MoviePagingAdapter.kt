@@ -30,7 +30,9 @@ class MoviePagingAdapter(
 
         fun bind(movie: Movie) {
             binding.root.setOnClickListener { onMovieClick(movie) }
-            binding.imagePoster.load(movie.imageMediumUrl ?: movie.imageOriginalUrl) {
+            val mediumUrl = movie.imageMediumUrl ?: movie.imageOriginalUrl
+            binding.imagePoster.load(mediumUrl) {
+                mediumUrl?.let { memoryCacheKey(it) }
                 crossfade(true)
                 placeholder(R.drawable.ic_placeholder)
                 error(R.drawable.ic_placeholder)

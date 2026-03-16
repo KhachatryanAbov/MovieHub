@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import coil.load
+import coil.memory.MemoryCache
 import com.abov.moviehub.R
 import com.abov.moviehub.databinding.FragmentMovieDetailBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -35,11 +36,20 @@ class MovieDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        preloadThumbnail()
         setupListeners()
         observeUiState()
 
         if (savedInstanceState == null) {
             viewModel.loadMovie(args.movieId)
+        }
+    }
+
+    private fun preloadThumbnail() {
+        val thumbnailUrl = args.imageUrl ?: return
+        binding.imagePoster.load(thumbnailUrl) {
+            placeholderMemoryCacheKey(MemoryCache.Key(thumbnailUrl))
+            error(R.drawable.ic_placeholder)
         }
     }
 
@@ -63,8 +73,10 @@ class MovieDetailFragment : Fragment() {
         textError.text = state.errorMessage ?: ""
 
         state.movie?.let { movie ->
-            imagePoster.load(movie.imageOriginalUrl ?: movie.imageMediumUrl) {
-                crossfade(true)
+            val originalUrl = movie.imageOriginalUrl ?: movie.imageMediumUrl
+            imagePoster.load(originalUrl) {
+                args.imageUrl?.let { placeholderMemoryCacheKey(MemoryCache.Key(it)) }
+                crossfade(300)
                 placeholder(R.drawable.ic_placeholder)
                 error(R.drawable.ic_placeholder)
             }

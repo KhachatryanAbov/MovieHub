@@ -45,7 +45,10 @@ class MovieListFragment : Fragment() {
     private fun setupAdapter() {
         movieAdapter = MoviePagingAdapter { movie ->
             val directions =
-                MovieListFragmentDirections.actionMovieListFragmentToMovieDetailFragment(movie.id)
+                MovieListFragmentDirections.actionMovieListFragmentToMovieDetailFragment(
+                    movieId = movie.id,
+                    imageUrl = movie.imageMediumUrl
+                )
             findNavController().navigate(directions)
         }
     }
