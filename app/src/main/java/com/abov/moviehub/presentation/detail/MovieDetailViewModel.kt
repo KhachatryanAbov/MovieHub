@@ -14,7 +14,7 @@ class MovieDetailViewModel @Inject constructor(
     private val getMovieDetailUseCase: GetMovieDetailUseCase
 ) : ViewModel() {
 
-    private val _uiState = MutableLiveData<MovieDetailUiState>(MovieDetailUiState())
+    private val _uiState = MutableLiveData(MovieDetailUiState())
     val uiState: LiveData<MovieDetailUiState> = _uiState
 
     fun loadMovie(id: Int) {

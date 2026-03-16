@@ -76,7 +76,7 @@ class MovieDetailFragment : Fragment() {
             val originalUrl = movie.imageOriginalUrl ?: movie.imageMediumUrl
             imagePoster.load(originalUrl) {
                 args.imageUrl?.let { placeholderMemoryCacheKey(MemoryCache.Key(it)) }
-                crossfade(300)
+                crossfade(true)
                 placeholder(R.drawable.ic_placeholder)
                 error(R.drawable.ic_placeholder)
             }
