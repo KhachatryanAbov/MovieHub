@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.abov.moviehub.domain.usecase.GetMovieDetailUseCase
+import com.abov.moviehub.presentation.util.toUserMessage
 import kotlinx.coroutines.Job
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -30,7 +31,7 @@ class MovieDetailViewModel @Inject constructor(
                     _uiState.value = MovieDetailUiState.Success(movie)
                 },
                 onFailure = { throwable ->
-                    _uiState.value = MovieDetailUiState.Error(throwable)
+                    _uiState.value = MovieDetailUiState.Error(throwable.toUserMessage())
                 }
             )
         }

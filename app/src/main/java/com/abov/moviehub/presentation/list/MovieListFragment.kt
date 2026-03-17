@@ -62,7 +62,7 @@ class MovieListFragment : Fragment() {
             adapter = movieAdapter.withLoadStateFooter(
                 footer = MovieLoadStateAdapter(
                     retry = { movieAdapter.retry() },
-                    errorMessage = { it.toUserMessage(requireContext()) }
+                    errorMessage = { it.toUserMessage() }
                 )
             )
         }
@@ -104,7 +104,7 @@ class MovieListFragment : Fragment() {
 
             if (showError) {
                 binding.textError.text =
-                    refresh.error.toUserMessage(requireContext())
+                    refresh.error.toUserMessage().asString(requireContext())
             }
         }
     }

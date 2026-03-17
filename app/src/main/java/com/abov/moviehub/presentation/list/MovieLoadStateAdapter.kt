@@ -7,10 +7,11 @@ import androidx.paging.LoadState
 import androidx.paging.LoadStateAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.abov.moviehub.databinding.ItemLoadStateBinding
+import com.abov.moviehub.presentation.util.UiText
 
 class MovieLoadStateAdapter(
     private val retry: () -> Unit,
-    private val errorMessage: (Throwable) -> String
+    private val errorMessage: (Throwable) -> UiText
 ) : LoadStateAdapter<MovieLoadStateAdapter.LoadStateViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, loadState: LoadState): LoadStateViewHolder {
@@ -26,7 +27,7 @@ class MovieLoadStateAdapter(
     class LoadStateViewHolder(
         private val binding: ItemLoadStateBinding,
         retry: () -> Unit,
-        private val errorMessage: (Throwable) -> String
+        private val errorMessage: (Throwable) -> UiText
     ) : RecyclerView.ViewHolder(binding.root) {
 
         init {
@@ -40,7 +41,7 @@ class MovieLoadStateAdapter(
             textError.isVisible = isError
 
             if (loadState is LoadState.Error) {
-                textError.text = errorMessage(loadState.error)
+                textError.text = errorMessage(loadState.error).asString(binding.root.context)
             }
         }
     }

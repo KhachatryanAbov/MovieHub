@@ -18,7 +18,6 @@ import com.abov.moviehub.databinding.FragmentMovieDetailBinding
 import com.abov.moviehub.presentation.util.orFallback
 import com.abov.moviehub.presentation.util.toDisplayHtml
 import com.abov.moviehub.presentation.util.toDisplayRating
-import com.abov.moviehub.presentation.util.toUserMessage
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -79,7 +78,7 @@ class MovieDetailFragment : Fragment() {
         when (state) {
             is MovieDetailUiState.Success -> renderContent(state)
             is MovieDetailUiState.Error -> textError.text =
-                state.throwable.toUserMessage(requireContext())
+                state.message.asString(requireContext())
             else -> Unit
         }
     }
