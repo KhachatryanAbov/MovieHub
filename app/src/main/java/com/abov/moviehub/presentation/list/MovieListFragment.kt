@@ -104,7 +104,7 @@ class MovieListFragment : Fragment() {
 
             if (showError) {
                 binding.textError.text =
-                    refresh.error.toUserMessage().asString(requireContext())
+                    getString(refresh.error.toUserMessage())
             }
         }
     }

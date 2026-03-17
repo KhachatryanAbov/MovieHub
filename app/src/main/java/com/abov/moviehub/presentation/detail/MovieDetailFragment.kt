@@ -78,7 +78,7 @@ class MovieDetailFragment : Fragment() {
         when (state) {
             is MovieDetailUiState.Success -> renderContent(state)
             is MovieDetailUiState.Error -> textError.text =
-                state.message.asString(requireContext())
+                getString(state.messageRes)
             else -> Unit
         }
     }

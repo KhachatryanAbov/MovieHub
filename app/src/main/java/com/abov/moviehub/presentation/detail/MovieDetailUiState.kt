@@ -1,10 +1,10 @@
 package com.abov.moviehub.presentation.detail
 
 import com.abov.moviehub.domain.model.Movie
-import com.abov.moviehub.presentation.util.UiText
+import androidx.annotation.StringRes
 
 sealed class MovieDetailUiState {
     data object Loading : MovieDetailUiState()
     data class Success(val movie: Movie) : MovieDetailUiState()
-    data class Error(val message: UiText) : MovieDetailUiState()
+    data class Error(@StringRes val messageRes: Int) : MovieDetailUiState()
 }
