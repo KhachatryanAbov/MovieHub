@@ -92,34 +92,20 @@ class MovieListFragment : Fragment() {
 
             binding.swipeRefresh.isRefreshing = refresh is LoadState.Loading
 
-            val uiState = when {
-                refresh is LoadState.Loading && itemCount == 0 ->
-                    MovieListUiState.Loading
+            val showLoading = refresh is LoadState.Loading && itemCount == 0
+            val showError = refresh is LoadState.Error && itemCount == 0
+            val showEmpty = refresh is LoadState.NotLoading && itemCount == 0
+            val showContent = !showLoading && !showError && !showEmpty
 
-                refresh is LoadState.Error && itemCount == 0 ->
-                    MovieListUiState.Error(
-                        refresh.error.toUserMessage(requireContext())
-                    )
+            binding.progressBar.isVisible = showLoading
+            binding.layoutError.isVisible = showError
+            binding.textEmpty.isVisible = showEmpty
+            binding.recyclerShows.isVisible = showContent
 
-                refresh is LoadState.NotLoading && itemCount == 0 ->
-                    MovieListUiState.Empty
-
-                else ->
-                    MovieListUiState.Content
+            if (showError) {
+                binding.textError.text =
+                    (refresh as LoadState.Error).error.toUserMessage(requireContext())
             }
-
-            renderUiState(uiState)
-        }
-    }
-
-    private fun renderUiState(state: MovieListUiState) = with(binding) {
-        progressBar.isVisible = state is MovieListUiState.Loading
-        recyclerShows.isVisible = state is MovieListUiState.Content
-        textEmpty.isVisible = state is MovieListUiState.Empty
-        layoutError.isVisible = state is MovieListUiState.Error
-
-        if (state is MovieListUiState.Error) {
-            textError.text = state.message
         }
     }
 
