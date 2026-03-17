@@ -67,39 +67,36 @@ class MovieDetailFragment : Fragment() {
     }
 
     private fun renderState(state: MovieDetailUiState) = with(binding) {
+        progressBar.isVisible = state is MovieDetailUiState.Loading
+        contentScroll.isVisible = state is MovieDetailUiState.Success
+        layoutError.isVisible = state is MovieDetailUiState.Error
+
         when (state) {
-            is MovieDetailUiState.Loading -> {
-                progressBar.isVisible = true
-                layoutError.isVisible = false
-                contentScroll.isVisible = false
-            }
-            is MovieDetailUiState.Success -> {
-                progressBar.isVisible = false
-                layoutError.isVisible = false
-                contentScroll.isVisible = true
-                val movie = state.movie
-                val originalUrl = movie.imageOriginalUrl ?: movie.imageMediumUrl
-                imagePoster.load(originalUrl) {
-                    args.imageUrl?.let { placeholderMemoryCacheKey(MemoryCache.Key(it)) }
-                    crossfade(true)
-                    placeholder(R.drawable.ic_placeholder)
-                    error(R.drawable.ic_placeholder)
-                }
-                textTitle.text = movie.name
-                textRating.text = movie.rating?.let { getString(R.string.movies_rating_format, "%.1f".format(it)) } ?: getString(R.string.common_not_available)
-                textLanguage.text = movie.language.orFallback()
-                textPremiered.text = movie.premiered.orFallback()
-                textSummary.text = movie.summary
-                    ?.let { HtmlCompat.fromHtml(it, HtmlCompat.FROM_HTML_MODE_LEGACY).trim() }
-                    ?: ""
-            }
-            is MovieDetailUiState.Error -> {
-                progressBar.isVisible = false
-                layoutError.isVisible = true
-                contentScroll.isVisible = false
-                textError.text = state.throwable.toUserMessage(requireContext())
-            }
+            is MovieDetailUiState.Success -> renderContent(state)
+            is MovieDetailUiState.Error -> textError.text =
+                state.throwable.toUserMessage(requireContext())
+            else -> Unit
         }
+    }
+
+    private fun FragmentMovieDetailBinding.renderContent(state: MovieDetailUiState.Success) {
+        val movie = state.movie
+        val originalUrl = movie.imageOriginalUrl ?: movie.imageMediumUrl
+        imagePoster.load(originalUrl) {
+            args.imageUrl?.let { placeholderMemoryCacheKey(MemoryCache.Key(it)) }
+            crossfade(true)
+            placeholder(R.drawable.ic_placeholder)
+            error(R.drawable.ic_placeholder)
+        }
+        textTitle.text = movie.name
+        textRating.text = movie.rating?.let {
+            getString(R.string.movies_rating_format, "%.1f".format(it))
+        } ?: getString(R.string.common_not_available)
+        textLanguage.text = movie.language.orFallback()
+        textPremiered.text = movie.premiered.orFallback()
+        textSummary.text = movie.summary
+            ?.let { HtmlCompat.fromHtml(it, HtmlCompat.FROM_HTML_MODE_LEGACY).trim() }
+            ?: ""
     }
 
     private fun String?.orFallback(): String {
