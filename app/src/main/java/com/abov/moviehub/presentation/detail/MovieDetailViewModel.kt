@@ -21,12 +21,14 @@ class MovieDetailViewModel @Inject constructor(
         _uiState.value = MovieDetailUiState.Loading
 
         viewModelScope.launch {
-            try {
-                val movie = getMovieDetailUseCase(id)
-                _uiState.value = MovieDetailUiState.Success(movie)
-            } catch (e: Exception) {
-                _uiState.value = MovieDetailUiState.Error(e)
-            }
+            getMovieDetailUseCase(id).fold(
+                onSuccess = { movie ->
+                    _uiState.value = MovieDetailUiState.Success(movie)
+                },
+                onFailure = { throwable ->
+                    _uiState.value = MovieDetailUiState.Error(throwable)
+                }
+            )
         }
     }
 }

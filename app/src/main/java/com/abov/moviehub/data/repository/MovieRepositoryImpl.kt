@@ -22,6 +22,7 @@ class MovieRepositoryImpl(
             pagingSourceFactory = { MoviePagingSource(apiService) }
         ).liveData
 
-    override suspend fun getMovieDetail(id: Int): Movie =
+    override suspend fun getMovieDetail(id: Int): Result<Movie> = runCatching {
         MovieMapper.toDomain(apiService.getMovieDetail(id))
+    }
 }
