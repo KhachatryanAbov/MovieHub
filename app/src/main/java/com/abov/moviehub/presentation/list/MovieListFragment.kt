@@ -98,7 +98,7 @@ class MovieListFragment : Fragment() {
 
             binding.progressBar.isVisible = showLoading
             binding.layoutError.isVisible = showError
-            binding.textEmpty.isVisible = showEmpty
+            binding.layoutEmpty.isVisible = showEmpty
             binding.recyclerMovies.isVisible = showContent
 
             if (showError) {
