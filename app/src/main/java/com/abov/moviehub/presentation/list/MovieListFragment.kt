@@ -3,7 +3,6 @@ package com.abov.moviehub.presentation.list
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import com.abov.moviehub.R
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -94,15 +93,14 @@ class MovieListFragment : Fragment() {
         movieAdapter.addLoadStateListener { loadState ->
             val isRefreshing = loadState.refresh is LoadState.Loading
             val isEmpty = loadState.refresh is LoadState.NotLoading && movieAdapter.itemCount == 0
-            val errorState = (loadState.refresh as? LoadState.Error)
-                ?: (loadState.append as? LoadState.Error)
+            val refreshError = loadState.refresh as? LoadState.Error
 
             binding.swipeRefresh.isRefreshing = isRefreshing
 
             when {
                 isRefreshing && movieAdapter.itemCount == 0 -> viewModel.onLoading()
-                errorState != null && movieAdapter.itemCount == 0 -> {
-                    viewModel.onError(errorState.error.toUserMessage(requireContext()))
+                refreshError != null && movieAdapter.itemCount == 0 -> {
+                    viewModel.onError(refreshError.error.toUserMessage(requireContext()))
                 }
 
                 isEmpty -> viewModel.onLoaded(isEmpty = true)
