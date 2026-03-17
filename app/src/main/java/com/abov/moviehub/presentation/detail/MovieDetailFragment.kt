@@ -17,6 +17,7 @@ import coil3.request.placeholder
 import com.abov.moviehub.R
 import com.abov.moviehub.databinding.FragmentMovieDetailBinding
 import com.abov.moviehub.presentation.util.orFallback
+import com.abov.moviehub.presentation.util.toDisplayRating
 import com.abov.moviehub.presentation.util.toUserMessage
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -94,7 +95,7 @@ class MovieDetailFragment : Fragment() {
         }
         textTitle.text = movie.name
         val fallback = getString(R.string.common_not_available)
-        val ratingText = movie.rating?.let { "%.1f".format(it) } ?: fallback
+        val ratingText = movie.rating.toDisplayRating(fallback)
         textRating.text = getString(R.string.movies_rating_format, ratingText)
         textLanguage.text = movie.language.orFallback(fallback)
         textPremiered.text = movie.premiered.orFallback(fallback)
