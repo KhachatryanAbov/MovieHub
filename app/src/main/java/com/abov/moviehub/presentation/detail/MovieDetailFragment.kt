@@ -44,10 +44,6 @@ class MovieDetailFragment : Fragment() {
         preloadThumbnail()
         setupListeners()
         observeUiState()
-
-        if (savedInstanceState == null) {
-            viewModel.loadMovie(args.movieId)
-        }
     }
 
     private fun preloadThumbnail() {
@@ -60,7 +56,7 @@ class MovieDetailFragment : Fragment() {
 
     private fun setupListeners() {
         binding.buttonRetry.setOnClickListener {
-            viewModel.loadMovie(args.movieId)
+            viewModel.retry()
         }
     }
 

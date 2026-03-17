@@ -2,6 +2,7 @@ package com.abov.moviehub.presentation.detail
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.abov.moviehub.domain.usecase.GetMovieDetailUseCase
@@ -13,6 +14,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MovieDetailViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     private val getMovieDetailUseCase: GetMovieDetailUseCase
 ) : ViewModel() {
 
@@ -21,12 +23,22 @@ class MovieDetailViewModel @Inject constructor(
 
     private var loadJob: Job? = null
 
-    fun loadMovie(id: Int) {
+    private val movieId: Int = checkNotNull(savedStateHandle[MOVIE_ID_KEY])
+
+    init {
+        loadMovie()
+    }
+
+    fun retry() {
+        loadMovie()
+    }
+
+    private fun loadMovie() {
         loadJob?.cancel()
         _uiState.value = MovieDetailUiState.Loading
 
         loadJob = viewModelScope.launch {
-            getMovieDetailUseCase(id).fold(
+            getMovieDetailUseCase(movieId).fold(
                 onSuccess = { movie ->
                     _uiState.value = MovieDetailUiState.Success(movie)
                 },
@@ -35,5 +47,9 @@ class MovieDetailViewModel @Inject constructor(
                 }
             )
         }
+    }
+
+    private companion object {
+        const val MOVIE_ID_KEY = "movieId"
     }
 }
