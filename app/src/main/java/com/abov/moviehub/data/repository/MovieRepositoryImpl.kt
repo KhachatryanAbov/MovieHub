@@ -18,6 +18,9 @@ class MovieRepositoryImpl(
         Pager(
             config = PagingConfig(
                 pageSize = pageSize,
+                prefetchDistance = pageSize / 2,
+                initialLoadSize = pageSize * 2,
+                maxSize = pageSize * 5,
                 enablePlaceholders = false
             ),
             pagingSourceFactory = { MoviePagingSource(apiService) }
