@@ -8,8 +8,6 @@ import com.abov.moviehub.data.remote.mapper.MovieMapper
 import com.abov.moviehub.data.remote.paging.MoviePagingSource
 import com.abov.moviehub.domain.model.Movie
 import com.abov.moviehub.domain.repository.MovieRepository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
 class MovieRepositoryImpl(
     private val apiService: ApiService
@@ -25,7 +23,5 @@ class MovieRepositoryImpl(
         ).liveData
 
     override suspend fun getMovieDetail(id: Int): Movie =
-        withContext(Dispatchers.IO) {
-            MovieMapper.toDomain(apiService.getMovieDetail(id))
-        }
+        MovieMapper.toDomain(apiService.getMovieDetail(id))
 }
