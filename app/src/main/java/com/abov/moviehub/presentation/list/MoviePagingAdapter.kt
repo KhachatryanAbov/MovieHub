@@ -29,16 +29,8 @@ class MoviePagingAdapter(
         private val onMovieClick: (Movie) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        private var currentMovie: Movie? = null
-
-        init {
-            binding.root.setOnClickListener {
-                currentMovie?.let(onMovieClick)
-            }
-        }
-
         fun bind(movie: Movie) {
-            currentMovie = movie
+            binding.root.setOnClickListener { onMovieClick(movie) }
             binding.imagePoster.load(movie.imageMediumUrl ?: movie.imageOriginalUrl) {
                 crossfade(true)
                 placeholder(R.drawable.ic_placeholder)
