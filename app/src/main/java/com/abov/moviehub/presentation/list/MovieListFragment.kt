@@ -58,7 +58,9 @@ class MovieListFragment : Fragment() {
         binding.recyclerShows.apply {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(requireContext())
-            adapter = movieAdapter
+            adapter = movieAdapter.withLoadStateFooter(
+                footer = MovieLoadStateAdapter { movieAdapter.retry() }
+            )
         }
     }
 
