@@ -57,6 +57,7 @@ class MovieListFragment : Fragment() {
     private fun setupRecyclerView() {
         binding.recyclerShows.apply {
             setHasFixedSize(true)
+            itemAnimator = null
             layoutManager = LinearLayoutManager(requireContext())
             adapter = movieAdapter.withLoadStateFooter(
                 footer = MovieLoadStateAdapter(
@@ -71,7 +72,6 @@ class MovieListFragment : Fragment() {
         binding.swipeRefresh.setOnRefreshListener {
             movieAdapter.refresh()
         }
-
         binding.buttonRetry.setOnClickListener {
             movieAdapter.retry()
         }
@@ -83,29 +83,32 @@ class MovieListFragment : Fragment() {
                 movieAdapter.submitData(pagingData)
             }
         }
-
-        viewModel.uiState.observe(viewLifecycleOwner) { state ->
-            renderUiState(state)
-        }
     }
 
     private fun observeLoadStates() {
         movieAdapter.addLoadStateListener { loadState ->
-            val isRefreshing = loadState.refresh is LoadState.Loading
-            val isEmpty = loadState.refresh is LoadState.NotLoading && movieAdapter.itemCount == 0
-            val refreshError = loadState.refresh as? LoadState.Error
+            val refresh = loadState.source.refresh
+            val itemCount = movieAdapter.itemCount
 
-            binding.swipeRefresh.isRefreshing = isRefreshing
+            binding.swipeRefresh.isRefreshing = refresh is LoadState.Loading
 
-            when {
-                isRefreshing && movieAdapter.itemCount == 0 -> viewModel.onLoading()
-                refreshError != null && movieAdapter.itemCount == 0 -> {
-                    viewModel.onError(refreshError.error.toUserMessage(requireContext()))
-                }
+            val uiState = when {
+                refresh is LoadState.Loading && itemCount == 0 ->
+                    MovieListUiState.Loading
 
-                isEmpty -> viewModel.onLoaded(isEmpty = true)
-                else -> viewModel.onLoaded(isEmpty = false)
+                refresh is LoadState.Error && itemCount == 0 ->
+                    MovieListUiState.Error(
+                        refresh.error.toUserMessage(requireContext())
+                    )
+
+                refresh is LoadState.NotLoading && itemCount == 0 ->
+                    MovieListUiState.Empty
+
+                else ->
+                    MovieListUiState.Content
             }
+
+            renderUiState(uiState)
         }
     }
 
