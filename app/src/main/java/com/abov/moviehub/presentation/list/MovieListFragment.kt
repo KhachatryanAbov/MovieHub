@@ -95,7 +95,7 @@ class MovieListFragment : Fragment() {
             val showLoading = refresh is LoadState.Loading && itemCount == 0
             val showError = refresh is LoadState.Error && itemCount == 0
             val showEmpty = refresh is LoadState.NotLoading && itemCount == 0
-            val showContent = !showLoading && !showError && !showEmpty
+            val showContent = refresh is LoadState.NotLoading && itemCount > 0
 
             binding.progressBar.isVisible = showLoading
             binding.layoutError.isVisible = showError
@@ -104,7 +104,7 @@ class MovieListFragment : Fragment() {
 
             if (showError) {
                 binding.textError.text =
-                    (refresh as LoadState.Error).error.toUserMessage(requireContext())
+                    refresh.error.toUserMessage(requireContext())
             }
         }
     }

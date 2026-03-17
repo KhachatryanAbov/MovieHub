@@ -5,9 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.abov.moviehub.domain.usecase.GetMovieDetailUseCase
-import com.abov.moviehub.presentation.util.toDisplayHtml
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.CancellationException
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -29,13 +27,9 @@ class MovieDetailViewModel @Inject constructor(
         loadJob = viewModelScope.launch {
             getMovieDetailUseCase(id).fold(
                 onSuccess = { movie ->
-                    _uiState.value = MovieDetailUiState.Success(
-                        movie = movie,
-                        displaySummary = movie.summary.toDisplayHtml()
-                    )
+                    _uiState.value = MovieDetailUiState.Success(movie)
                 },
                 onFailure = { throwable ->
-                    if (throwable is CancellationException) return@launch
                     _uiState.value = MovieDetailUiState.Error(throwable)
                 }
             )
