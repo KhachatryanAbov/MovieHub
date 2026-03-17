@@ -5,7 +5,10 @@ import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import coil.load
+import coil3.load
+import coil3.request.crossfade
+import coil3.request.error
+import coil3.request.placeholder
 import com.abov.moviehub.R
 import com.abov.moviehub.databinding.ItemMovieBinding
 import com.abov.moviehub.domain.model.Movie

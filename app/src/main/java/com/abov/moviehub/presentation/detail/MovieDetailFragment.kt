@@ -9,8 +9,11 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
-import coil.load
-import coil.memory.MemoryCache
+import coil3.load
+import coil3.memory.MemoryCache
+import coil3.request.crossfade
+import coil3.request.error
+import coil3.request.placeholder
 import com.abov.moviehub.R
 import com.abov.moviehub.databinding.FragmentMovieDetailBinding
 import com.abov.moviehub.presentation.util.orFallback
