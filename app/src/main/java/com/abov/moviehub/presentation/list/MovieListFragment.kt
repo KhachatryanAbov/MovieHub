@@ -89,12 +89,12 @@ class MovieListFragment : Fragment() {
             val refresh = loadState.source.refresh
             val itemCount = movieAdapter.itemCount
 
-            binding.swipeRefresh.isRefreshing = refresh is LoadState.Loading
+            binding.swipeRefresh.isRefreshing = refresh is LoadState.Loading && itemCount > 0
 
             val showLoading = refresh is LoadState.Loading && itemCount == 0
             val showError = refresh is LoadState.Error && itemCount == 0
             val showEmpty = refresh is LoadState.NotLoading && itemCount == 0
-            val showContent = refresh is LoadState.NotLoading && itemCount > 0
+            val showContent = itemCount > 0
 
             binding.progressBar.isVisible = showLoading
             binding.layoutError.isVisible = showError
