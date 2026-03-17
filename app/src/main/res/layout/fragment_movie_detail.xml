@@ -39,82 +39,82 @@
                 android:orientation="vertical"
                 android:padding="@dimen/spacing_large">
 
-            <TextView
-                android:id="@+id/label_title"
-                style="@style/TextAppearance.MovieHub.SectionLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_large"
-                android:text="@string/movies_field_title" />
+                <TextView
+                    android:id="@+id/label_title"
+                    style="@style/TextAppearance.MovieHub.SectionLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_large"
+                    android:text="@string/movies_field_title" />
 
-            <TextView
-                android:id="@+id/text_title"
-                style="@style/TextAppearance.MovieHub.SectionValue"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                tools:text="Movie title" />
+                <TextView
+                    android:id="@+id/text_title"
+                    style="@style/TextAppearance.MovieHub.SectionValue"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:text="Movie title" />
 
-            <TextView
-                android:id="@+id/label_rating"
-                style="@style/TextAppearance.MovieHub.SectionLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_medium"
-                android:text="@string/movies_field_rating" />
+                <TextView
+                    android:id="@+id/label_rating"
+                    style="@style/TextAppearance.MovieHub.SectionLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_medium"
+                    android:text="@string/movies_field_rating" />
 
-            <TextView
-                android:id="@+id/text_rating"
-                style="@style/TextAppearance.MovieHub.SectionValue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="8.8" />
+                <TextView
+                    android:id="@+id/text_rating"
+                    style="@style/TextAppearance.MovieHub.SectionValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="8.8" />
 
-            <TextView
-                android:id="@+id/label_language"
-                style="@style/TextAppearance.MovieHub.SectionLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_medium"
-                android:text="@string/movies_field_language" />
+                <TextView
+                    android:id="@+id/label_language"
+                    style="@style/TextAppearance.MovieHub.SectionLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_medium"
+                    android:text="@string/movies_field_language" />
 
-            <TextView
-                android:id="@+id/text_language"
-                style="@style/TextAppearance.MovieHub.SectionValue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="English" />
+                <TextView
+                    android:id="@+id/text_language"
+                    style="@style/TextAppearance.MovieHub.SectionValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="English" />
 
-            <TextView
-                android:id="@+id/label_premiered"
-                style="@style/TextAppearance.MovieHub.SectionLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_medium"
-                android:text="@string/movies_field_premiered" />
+                <TextView
+                    android:id="@+id/label_premiered"
+                    style="@style/TextAppearance.MovieHub.SectionLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_medium"
+                    android:text="@string/movies_field_premiered" />
 
-            <TextView
-                android:id="@+id/text_premiered"
-                style="@style/TextAppearance.MovieHub.SectionValue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="2024" />
+                <TextView
+                    android:id="@+id/text_premiered"
+                    style="@style/TextAppearance.MovieHub.SectionValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="2024" />
 
-            <TextView
-                android:id="@+id/label_summary"
-                style="@style/TextAppearance.MovieHub.SectionLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_xlarge"
-                android:text="@string/movies_field_summary" />
+                <TextView
+                    android:id="@+id/label_summary"
+                    style="@style/TextAppearance.MovieHub.SectionLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_xlarge"
+                    android:text="@string/movies_field_summary" />
 
-            <TextView
-                android:id="@+id/text_summary"
-                style="@style/TextAppearance.MovieHub.SectionValue"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_small"
-                android:lineSpacingExtra="@dimen/spacing_xsmall"
-                tools:text="Summary text..." />
+                <TextView
+                    android:id="@+id/text_summary"
+                    style="@style/TextAppearance.MovieHub.SectionValue"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_small"
+                    android:lineSpacingExtra="@dimen/spacing_xsmall"
+                    tools:text="Summary text..." />
 
             </LinearLayout>
         </LinearLayout>
