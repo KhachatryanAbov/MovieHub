@@ -5,6 +5,7 @@ import androidx.paging.PagingState
 import com.abov.moviehub.data.remote.ApiService
 import com.abov.moviehub.data.remote.mapper.MovieMapper
 import com.abov.moviehub.domain.model.Movie
+import kotlinx.coroutines.CancellationException
 
 class MoviePagingSource(
     private val apiService: ApiService
@@ -21,6 +22,7 @@ class MoviePagingSource(
                 nextKey = nextKey
             )
         } catch (e: Exception) {
+            if (e is CancellationException) throw e
             LoadResult.Error(e)
         }
     }
