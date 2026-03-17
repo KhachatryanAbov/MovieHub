@@ -17,7 +17,7 @@
         app:layout_constraintEnd_toEndOf="parent">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_shows"
+            android:id="@+id/recycler_movies"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipToPadding="false"

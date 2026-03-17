@@ -55,9 +55,8 @@ class MovieListFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        binding.recyclerShows.apply {
+        binding.recyclerMovies.apply {
             setHasFixedSize(true)
-            itemAnimator = null
             layoutManager = LinearLayoutManager(requireContext())
             adapter = movieAdapter.withLoadStateFooter(
                 footer = MovieLoadStateAdapter(
@@ -100,7 +99,7 @@ class MovieListFragment : Fragment() {
             binding.progressBar.isVisible = showLoading
             binding.layoutError.isVisible = showError
             binding.textEmpty.isVisible = showEmpty
-            binding.recyclerShows.isVisible = showContent
+            binding.recyclerMovies.isVisible = showContent
 
             if (showError) {
                 binding.textError.text =
