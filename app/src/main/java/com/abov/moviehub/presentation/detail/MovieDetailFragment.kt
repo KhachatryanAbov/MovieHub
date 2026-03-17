@@ -90,10 +90,9 @@ class MovieDetailFragment : Fragment() {
             error(R.drawable.ic_placeholder)
         }
         textTitle.text = movie.name
-        textRating.text = movie.rating?.let {
-            getString(R.string.movies_rating_format, "%.1f".format(it))
-        } ?: getString(R.string.common_not_available)
         val fallback = getString(R.string.common_not_available)
+        val ratingText = movie.rating?.let { "%.1f".format(it) } ?: fallback
+        textRating.text = getString(R.string.movies_rating_format, ratingText)
         textLanguage.text = movie.language.orFallback(fallback)
         textPremiered.text = movie.premiered.orFallback(fallback)
         textSummary.text = movie.summary
