@@ -13,10 +13,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.abov.moviehub.databinding.FragmentMovieListBinding
+import com.abov.moviehub.presentation.util.toUserMessage
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import retrofit2.HttpException
-import java.net.UnknownHostException
 
 @AndroidEntryPoint
 class MovieListFragment : Fragment() {
@@ -63,7 +62,7 @@ class MovieListFragment : Fragment() {
             adapter = movieAdapter.withLoadStateFooter(
                 footer = MovieLoadStateAdapter(
                     retry = { movieAdapter.retry() },
-                    errorMessage = ::throwableToMessage
+                    errorMessage = { it.toUserMessage(requireContext()) }
                 )
             )
         }
@@ -103,20 +102,12 @@ class MovieListFragment : Fragment() {
             when {
                 isRefreshing && movieAdapter.itemCount == 0 -> viewModel.onLoading()
                 errorState != null && movieAdapter.itemCount == 0 -> {
-                    viewModel.onError(throwableToMessage(errorState.error))
+                    viewModel.onError(errorState.error.toUserMessage(requireContext()))
                 }
 
                 isEmpty -> viewModel.onLoaded(isEmpty = true)
                 else -> viewModel.onLoaded(isEmpty = false)
             }
-        }
-    }
-
-    private fun throwableToMessage(t: Throwable): String {
-        return when (t) {
-            is UnknownHostException -> getString(R.string.error_no_internet)
-            is HttpException -> getString(R.string.error_server_format, t.code())
-            else -> getString(R.string.error_generic_message)
         }
     }
 
