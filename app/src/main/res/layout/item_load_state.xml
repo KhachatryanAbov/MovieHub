@@ -20,7 +20,7 @@
 
     <TextView
         android:id="@+id/text_error"
-        style="@style/TextAppearance.MovieHub.BodySecondary"
+        style="@style/TextAppearance.MovieHub.StateText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="center"
