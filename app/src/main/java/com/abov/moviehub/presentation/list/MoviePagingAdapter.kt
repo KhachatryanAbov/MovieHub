@@ -9,6 +9,7 @@ import coil.load
 import com.abov.moviehub.R
 import com.abov.moviehub.databinding.ItemMovieBinding
 import com.abov.moviehub.domain.model.Movie
+import com.abov.moviehub.presentation.util.orFallback
 
 class MoviePagingAdapter(
     private val onMovieClick: (Movie) -> Unit
@@ -52,9 +53,10 @@ class MoviePagingAdapter(
             binding.textTitle.text = movie.name
 
             val ctx = binding.root.context
+            val fallback = ctx.getString(R.string.common_not_available)
             val ratingText = movie.rating?.let { "%.1f".format(it) }
-                ?: ctx.getString(R.string.common_not_available)
-            val premieredText = movie.premiered ?: ctx.getString(R.string.common_not_available)
+                ?: fallback
+            val premieredText = movie.premiered.orFallback(fallback)
 
             binding.textRating.text =
                 ctx.getString(R.string.movies_rating_format, ratingText)

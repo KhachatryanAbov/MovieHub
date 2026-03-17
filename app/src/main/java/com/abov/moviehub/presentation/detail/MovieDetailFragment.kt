@@ -13,6 +13,7 @@ import coil.load
 import coil.memory.MemoryCache
 import com.abov.moviehub.R
 import com.abov.moviehub.databinding.FragmentMovieDetailBinding
+import com.abov.moviehub.presentation.util.orFallback
 import com.abov.moviehub.presentation.util.toUserMessage
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -92,19 +93,12 @@ class MovieDetailFragment : Fragment() {
         textRating.text = movie.rating?.let {
             getString(R.string.movies_rating_format, "%.1f".format(it))
         } ?: getString(R.string.common_not_available)
-        textLanguage.text = movie.language.orFallback()
-        textPremiered.text = movie.premiered.orFallback()
+        val fallback = getString(R.string.common_not_available)
+        textLanguage.text = movie.language.orFallback(fallback)
+        textPremiered.text = movie.premiered.orFallback(fallback)
         textSummary.text = movie.summary
             ?.let { HtmlCompat.fromHtml(it, HtmlCompat.FROM_HTML_MODE_LEGACY).trim() }
             ?: ""
-    }
-
-    private fun String?.orFallback(): String {
-        return if (this.isNullOrBlank()) {
-            getString(R.string.common_not_available)
-        } else {
-            this
-        }
     }
 
     override fun onDestroyView() {
