@@ -1,4 +1,4 @@
-package com.abov.moviehub.data.remote.paging
+package com.abov.moviehub.data.paging
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
@@ -32,3 +32,4 @@ class MoviePagingSource(
         }
     }
 }
+
