@@ -8,6 +8,7 @@ import com.abov.moviehub.data.remote.ApiService
 import com.abov.moviehub.data.remote.mapper.MovieMapper
 import com.abov.moviehub.domain.model.Movie
 import com.abov.moviehub.domain.repository.MovieRepository
+import kotlinx.coroutines.CancellationException
 
 class MovieRepositoryImpl(
     private val apiService: ApiService
@@ -24,5 +25,7 @@ class MovieRepositoryImpl(
 
     override suspend fun getMovieDetail(id: Int): Result<Movie> = runCatching {
         MovieMapper.toDomain(apiService.getMovieDetail(id))
+    }.onFailure { throwable ->
+        if (throwable is CancellationException) throw throwable
     }
 }
