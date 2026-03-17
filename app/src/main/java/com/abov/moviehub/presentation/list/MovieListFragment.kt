@@ -110,35 +110,18 @@ class MovieListFragment : Fragment() {
     }
 
     private fun renderUiState(state: MovieListUiState) = with(binding) {
-        when (state) {
-            is MovieListUiState.Loading -> {
-                progressBar.isVisible = true
-                layoutError.isVisible = false
-                textEmpty.isVisible = false
-                recyclerShows.isVisible = false
-            }
+        val showLoading = state is MovieListUiState.Loading
+        val showContent = state is MovieListUiState.Content
+        val showEmpty = state is MovieListUiState.Empty
+        val showError = state is MovieListUiState.Error
 
-            is MovieListUiState.Content -> {
-                progressBar.isVisible = false
-                layoutError.isVisible = false
-                textEmpty.isVisible = false
-                recyclerShows.isVisible = true
-            }
+        progressBar.isVisible = showLoading
+        recyclerShows.isVisible = showContent
+        textEmpty.isVisible = showEmpty
+        layoutError.isVisible = showError
 
-            is MovieListUiState.Empty -> {
-                progressBar.isVisible = false
-                layoutError.isVisible = false
-                textEmpty.isVisible = true
-                recyclerShows.isVisible = false
-            }
-
-            is MovieListUiState.Error -> {
-                progressBar.isVisible = false
-                layoutError.isVisible = true
-                textError.text = state.message
-                textEmpty.isVisible = false
-                recyclerShows.isVisible = false
-            }
+        if (showError) {
+            textError.text = state.message
         }
     }
 
