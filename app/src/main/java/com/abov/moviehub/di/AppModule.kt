@@ -19,7 +19,7 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object AppModule {
 
-    private const val BASE_URL = "https://api.tvmaze.com/"
+    private const val BASE_URL = BuildConfig.BASE_URL
 
     @Provides
     @Singleton

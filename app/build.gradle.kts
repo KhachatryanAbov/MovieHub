@@ -23,7 +23,11 @@ android {
     }
 
     buildTypes {
+        debug {
+            buildConfigField("String", "BASE_URL", "\"https://api.tvmaze.com/\"")
+        }
         release {
+            buildConfigField("String", "BASE_URL", "\"https://api.tvmaze.com/\"")
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(
