@@ -19,7 +19,7 @@ class MovieRepositoryImpl(
             config = PagingConfig(
                 pageSize = pageSize,
                 prefetchDistance = pageSize / 2,
-                initialLoadSize = pageSize * 2,
+                initialLoadSize = pageSize,
                 maxSize = pageSize * 5,
                 enablePlaceholders = false
             ),
