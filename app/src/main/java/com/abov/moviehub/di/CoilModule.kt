@@ -44,7 +44,7 @@ object CoilModule {
                     .directory(
                         context.cacheDir.resolve("image_cache").toOkioPath()
                     )
-                    .maxSizePercent(0.02)
+                    .maxSizeBytes(50L * 1024 * 1024) // 50 MB
                     .build()
             }
             .build()
