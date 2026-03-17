@@ -3,6 +3,7 @@ package com.abov.moviehub.presentation.list
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import com.abov.moviehub.R
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -55,6 +56,7 @@ class MovieListFragment : Fragment() {
 
     private fun setupRecyclerView() {
         binding.recyclerShows.apply {
+            setHasFixedSize(true)
             layoutManager = LinearLayoutManager(requireContext())
             adapter = movieAdapter
         }
@@ -71,7 +73,7 @@ class MovieListFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        viewModel.shows.observe(viewLifecycleOwner) { pagingData ->
+        viewModel.movies.observe(viewLifecycleOwner) { pagingData ->
             viewLifecycleOwner.lifecycleScope.launch {
                 movieAdapter.submitData(pagingData)
             }
@@ -94,8 +96,12 @@ class MovieListFragment : Fragment() {
             when {
                 isRefreshing && movieAdapter.itemCount == 0 -> viewModel.onLoading()
                 errorState != null && movieAdapter.itemCount == 0 -> {
-                    viewModel.onError(errorState.error.localizedMessage ?: "Something went wrong")
+                    viewModel.onError(
+                        errorState.error.localizedMessage
+                            ?: getString(R.string.error_generic_message)
+                    )
                 }
+
                 isEmpty -> viewModel.onLoaded(isEmpty = true)
                 else -> viewModel.onLoaded(isEmpty = false)
             }
@@ -103,11 +109,36 @@ class MovieListFragment : Fragment() {
     }
 
     private fun renderUiState(state: MovieListUiState) = with(binding) {
-        progressBar.isVisible = state.isLoading
-        layoutError.isVisible = state.errorMessage != null
-        textError.text = state.errorMessage ?: ""
-        textEmpty.isVisible = state.isEmpty
-        recyclerShows.isVisible = !state.isLoading && state.errorMessage == null && !state.isEmpty
+        when (state) {
+            is MovieListUiState.Loading -> {
+                progressBar.isVisible = true
+                layoutError.isVisible = false
+                textEmpty.isVisible = false
+                recyclerShows.isVisible = false
+            }
+
+            is MovieListUiState.Content -> {
+                progressBar.isVisible = false
+                layoutError.isVisible = false
+                textEmpty.isVisible = false
+                recyclerShows.isVisible = true
+            }
+
+            is MovieListUiState.Empty -> {
+                progressBar.isVisible = false
+                layoutError.isVisible = false
+                textEmpty.isVisible = true
+                recyclerShows.isVisible = false
+            }
+
+            is MovieListUiState.Error -> {
+                progressBar.isVisible = false
+                layoutError.isVisible = true
+                textError.text = state.message
+                textEmpty.isVisible = false
+                recyclerShows.isVisible = false
+            }
+        }
     }
 
     override fun onDestroyView() {

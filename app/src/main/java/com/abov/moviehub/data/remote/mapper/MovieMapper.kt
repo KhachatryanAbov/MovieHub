@@ -12,10 +12,7 @@ object MovieMapper {
         imageOriginalUrl = dto.image?.original,
         rating = dto.rating?.average,
         summary = dto.summary,
-        genres = dto.genres.orEmpty(),
         language = dto.language,
-        status = dto.status,
-        premiered = dto.premiered,
-        networkName = dto.network?.name
+        premiered = dto.premiered
     )
 }

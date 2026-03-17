@@ -52,12 +52,10 @@ object AppModule {
         MovieRepositoryImpl(apiService)
 
     @Provides
-    @Singleton
     fun provideGetPagedMoviesUseCase(repository: MovieRepository): GetPagedMoviesUseCase =
         GetPagedMoviesUseCase(repository)
 
     @Provides
-    @Singleton
     fun provideGetMovieDetailUseCase(repository: MovieRepository): GetMovieDetailUseCase =
         GetMovieDetailUseCase(repository)
 }

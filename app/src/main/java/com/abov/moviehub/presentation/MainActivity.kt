@@ -1,4 +1,4 @@
-package com.abov.moviehub
+package com.abov.moviehub.presentation
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -7,6 +7,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
+import com.abov.moviehub.R
 import com.abov.moviehub.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 

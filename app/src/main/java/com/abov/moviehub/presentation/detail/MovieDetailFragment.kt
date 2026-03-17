@@ -1,8 +1,8 @@
 package com.abov.moviehub.presentation.detail
 
 import android.os.Bundle
-import android.text.Html
 import android.view.LayoutInflater
+import androidx.core.text.HtmlCompat
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
@@ -66,29 +66,38 @@ class MovieDetailFragment : Fragment() {
     }
 
     private fun renderState(state: MovieDetailUiState) = with(binding) {
-        progressBar.isVisible = state.isLoading
-        layoutError.isVisible = state.errorMessage != null && state.movie == null
-        contentScroll.isVisible = state.movie != null
-
-        textError.text = state.errorMessage ?: ""
-
-        state.movie?.let { movie ->
-            val originalUrl = movie.imageOriginalUrl ?: movie.imageMediumUrl
-            imagePoster.load(originalUrl) {
-                args.imageUrl?.let { placeholderMemoryCacheKey(MemoryCache.Key(it)) }
-                crossfade(true)
-                placeholder(R.drawable.ic_placeholder)
-                error(R.drawable.ic_placeholder)
+        when (state) {
+            is MovieDetailUiState.Loading -> {
+                progressBar.isVisible = true
+                layoutError.isVisible = false
+                contentScroll.isVisible = false
             }
-
-            textTitle.text = movie.name
-            textRating.text = movie.rating?.let { getString(R.string.movies_rating_format, "%.1f".format(it)) } ?: getString(R.string.common_not_available)
-            textLanguage.text = movie.language.orFallback()
-            textPremiered.text = movie.premiered.orFallback()
-            textSummary.text = Html.fromHtml(
-                movie.summary.orEmpty(),
-                Html.FROM_HTML_MODE_LEGACY
-            )
+            is MovieDetailUiState.Success -> {
+                progressBar.isVisible = false
+                layoutError.isVisible = false
+                contentScroll.isVisible = true
+                val movie = state.movie
+                val originalUrl = movie.imageOriginalUrl ?: movie.imageMediumUrl
+                imagePoster.load(originalUrl) {
+                    args.imageUrl?.let { placeholderMemoryCacheKey(MemoryCache.Key(it)) }
+                    crossfade(true)
+                    placeholder(R.drawable.ic_placeholder)
+                    error(R.drawable.ic_placeholder)
+                }
+                textTitle.text = movie.name
+                textRating.text = movie.rating?.let { getString(R.string.movies_rating_format, "%.1f".format(it)) } ?: getString(R.string.common_not_available)
+                textLanguage.text = movie.language.orFallback()
+                textPremiered.text = movie.premiered.orFallback()
+                textSummary.text = movie.summary
+                    ?.let { HtmlCompat.fromHtml(it, HtmlCompat.FROM_HTML_MODE_LEGACY).trim() }
+                    ?: ""
+            }
+            is MovieDetailUiState.Error -> {
+                progressBar.isVisible = false
+                layoutError.isVisible = true
+                contentScroll.isVisible = false
+                textError.text = state.message
+            }
         }
     }
 

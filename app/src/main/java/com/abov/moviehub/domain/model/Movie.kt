@@ -7,9 +7,6 @@ data class Movie(
     val imageOriginalUrl: String?,
     val rating: Double?,
     val summary: String?,
-    val genres: List<String>,
     val language: String?,
-    val status: String?,
-    val premiered: String?,
-    val networkName: String?
+    val premiered: String?
 )

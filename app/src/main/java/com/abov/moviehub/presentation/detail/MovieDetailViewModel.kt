@@ -14,27 +14,19 @@ class MovieDetailViewModel @Inject constructor(
     private val getMovieDetailUseCase: GetMovieDetailUseCase
 ) : ViewModel() {
 
-    private val _uiState = MutableLiveData(MovieDetailUiState())
+    private val _uiState = MutableLiveData<MovieDetailUiState>(MovieDetailUiState.Loading)
     val uiState: LiveData<MovieDetailUiState> = _uiState
 
     fun loadMovie(id: Int) {
-        _uiState.value = _uiState.value?.copy(
-            isLoading = true,
-            errorMessage = null
-        )
+        _uiState.value = MovieDetailUiState.Loading
 
         viewModelScope.launch {
             try {
                 val movie = getMovieDetailUseCase(id)
-                _uiState.value = MovieDetailUiState(
-                    isLoading = false,
-                    errorMessage = null,
-                    movie = movie
-                )
+                _uiState.value = MovieDetailUiState.Success(movie)
             } catch (e: Exception) {
-                _uiState.value = _uiState.value?.copy(
-                    isLoading = false,
-                    errorMessage = e.message ?: "Unable to load movie details"
+                _uiState.value = MovieDetailUiState.Error(
+                    e.message ?: "Unable to load movie details"
                 )
             }
         }

@@ -15,12 +15,13 @@ class MoviePagingAdapter(
 ) : PagingDataAdapter<Movie, MoviePagingAdapter.MovieViewHolder>(MOVIE_COMPARATOR) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
-        val binding = ItemMovieBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = ItemMovieBinding.inflate(LayoutInflater.from(parent.context),
+            parent, false)
         return MovieViewHolder(binding, onMovieClick)
     }
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
-        getItem(position)?.let { holder.bind(it) }
+        getItem(position)?.let(holder::bind)
     }
 
     class MovieViewHolder(
@@ -28,20 +29,33 @@ class MoviePagingAdapter(
         private val onMovieClick: (Movie) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
 
+        private var currentMovie: Movie? = null
+
+        init {
+            binding.root.setOnClickListener {
+                currentMovie?.let(onMovieClick)
+            }
+        }
+
         fun bind(movie: Movie) {
-            binding.root.setOnClickListener { onMovieClick(movie) }
-            val mediumUrl = movie.imageMediumUrl ?: movie.imageOriginalUrl
-            binding.imagePoster.load(mediumUrl) {
-                mediumUrl?.let { memoryCacheKey(it) }
+            currentMovie = movie
+            binding.imagePoster.load(movie.imageMediumUrl ?: movie.imageOriginalUrl) {
                 crossfade(true)
                 placeholder(R.drawable.ic_placeholder)
                 error(R.drawable.ic_placeholder)
             }
             binding.textTitle.text = movie.name
-            binding.textRating.text = movie.rating?.let { "%.1f".format(it) }
-                ?: binding.root.context.getString(R.string.common_not_available)
-            binding.textPremiered.text = movie.premiered
-                ?: binding.root.context.getString(R.string.common_not_available)
+
+            val ctx = binding.root.context
+            val ratingText = movie.rating?.let { "%.1f".format(it) }
+                ?: ctx.getString(R.string.common_not_available)
+            val premieredText = movie.premiered ?: ctx.getString(R.string.common_not_available)
+
+            binding.textRating.text =
+                ctx.getString(R.string.movies_rating_format, ratingText)
+
+            binding.textPremiered.text =
+                ctx.getString(R.string.movies_premiered_format, premieredText)
         }
     }
 

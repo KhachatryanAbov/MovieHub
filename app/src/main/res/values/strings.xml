@@ -25,6 +25,7 @@
 
     <!-- Formatting -->
     <string name="movies_rating_format">Rating: %1$s</string>
+    <string name="movies_premiered_format">Premiered: %1$s</string>
 
     <!-- Errors -->
     <string name="error_generic_message">Something went wrong</string>

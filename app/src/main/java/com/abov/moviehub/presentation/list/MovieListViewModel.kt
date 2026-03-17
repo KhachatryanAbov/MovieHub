@@ -11,41 +11,25 @@ import com.abov.moviehub.domain.usecase.GetPagedMoviesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
-data class MovieListUiState(
-    val isLoading: Boolean = false,
-    val errorMessage: String? = null,
-    val isEmpty: Boolean = false
-)
-
 @HiltViewModel
 class MovieListViewModel @Inject constructor(
     getPagedMoviesUseCase: GetPagedMoviesUseCase
 ) : ViewModel() {
 
-    private val _uiState = MutableLiveData(MovieListUiState(isLoading = true))
+    private val _uiState = MutableLiveData<MovieListUiState>(MovieListUiState.Loading)
     val uiState: LiveData<MovieListUiState> = _uiState
 
-    val shows: LiveData<PagingData<Movie>> =
-        getPagedMoviesUseCase()
-            .cachedIn(viewModelScope)
+    val movies: LiveData<PagingData<Movie>> = getPagedMoviesUseCase().cachedIn(viewModelScope)
 
     fun onLoading() {
-        _uiState.value = _uiState.value?.copy(isLoading = true, errorMessage = null)
+        _uiState.value = MovieListUiState.Loading
     }
 
     fun onLoaded(isEmpty: Boolean) {
-        _uiState.value = _uiState.value?.copy(
-            isLoading = false,
-            errorMessage = null,
-            isEmpty = isEmpty
-        )
+        _uiState.value = if (isEmpty) MovieListUiState.Empty else MovieListUiState.Content
     }
 
-    fun onError(message: String?) {
-        _uiState.value = _uiState.value?.copy(
-            isLoading = false,
-            errorMessage = message ?: "Something went wrong",
-            isEmpty = false
-        )
+    fun onError(message: String) {
+        _uiState.value = MovieListUiState.Error(message)
     }
 }

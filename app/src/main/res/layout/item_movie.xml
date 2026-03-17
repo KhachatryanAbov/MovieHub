@@ -10,16 +10,15 @@
     android:layout_marginBottom="@dimen/spacing_xsmall"
     android:clickable="true"
     android:focusable="true"
-    android:foreground="?attr/selectableItemBackground"
     app:cardCornerRadius="@dimen/card_corner_radius"
-    app:cardElevation="3dp"
+    app:cardElevation="2dp"
     app:strokeColor="?attr/colorOutline"
-    app:strokeWidth="1dp">
+    app:strokeWidth="1dp"
+    app:rippleColor="?attr/colorControlHighlight">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:padding="@dimen/spacing_medium">
 
         <com.google.android.material.imageview.ShapeableImageView
@@ -29,59 +28,48 @@
             android:contentDescription="@string/movies_list_poster_description"
             android:scaleType="centerCrop"
             app:shapeAppearanceOverlay="@style/ShapeAppearance.MovieHub.Poster"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             tools:src="@tools:sample/avatars" />
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/text_title"
+            style="@style/TextAppearance.Material3.TitleMedium"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/spacing_medium"
-            android:layout_weight="1"
-            android:gravity="center_vertical"
-            android:orientation="vertical">
+            android:ellipsize="end"
+            android:maxLines="2"
+            app:layout_constraintStart_toEndOf="@id/image_poster"
+            app:layout_constraintTop_toTopOf="@id/image_poster"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="Movie title" />
 
-            <TextView
-                android:id="@+id/text_title"
-                style="@style/TextAppearance.Material3.TitleMedium"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:maxLines="2"
-                tools:text="Movie title" />
+        <TextView
+            android:id="@+id/text_rating"
+            style="@style/TextAppearance.Material3.BodyMedium"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_medium"
+            android:layout_marginTop="@dimen/spacing_small"
+            app:layout_constraintStart_toEndOf="@id/image_poster"
+            app:layout_constraintTop_toBottomOf="@id/text_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="Rating: 8.8" />
 
-            <TextView
-                android:id="@+id/label_rating"
-                style="@style/TextAppearance.MovieHub.BodySecondary"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_small"
-                android:text="@string/movies_field_rating" />
+        <TextView
+            android:id="@+id/text_premiered"
+            style="@style/TextAppearance.Material3.BodyMedium"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_medium"
+            android:layout_marginTop="@dimen/spacing_xsmall"
+            app:layout_constraintStart_toEndOf="@id/image_poster"
+            app:layout_constraintTop_toBottomOf="@id/text_rating"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="Premiered: 12/10/2024" />
 
-            <TextView
-                android:id="@+id/text_rating"
-                style="@style/TextAppearance.Material3.BodyMedium"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_xsmall"
-                tools:text="8.8" />
-
-            <TextView
-                android:id="@+id/label_premiered"
-                style="@style/TextAppearance.MovieHub.BodySecondary"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_small"
-                android:text="@string/movies_field_premiered" />
-
-            <TextView
-                android:id="@+id/text_premiered"
-                style="@style/TextAppearance.Material3.BodyMedium"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_xsmall"
-                tools:text="@tools:sample/date/ddmmyy" />
-
-        </LinearLayout>
-
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </com.google.android.material.card.MaterialCardView>

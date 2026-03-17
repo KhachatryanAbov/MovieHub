@@ -22,10 +22,10 @@ Submission for the Android Developer Technical Assignment: a small app that disp
 | Vertically scrollable list | `RecyclerView` with `LinearLayoutManager` inside `SwipeRefreshLayout`. |
 | Each item: image, title, secondary info | List item shows poster image (Coil), title, rating, premiered date. |
 | Click opens Details | Navigation with Safe Args: `movieId` + `imageUrl` (medium) to `MovieDetailFragment`. |
-| Loading state | Progress bar visible while initial load; `LoadState.Loading` drives `MovieListUiState.isLoading`. |
-| Error state | Error message + retry button; `LoadState.Error` and `viewModel.onError()`. |
+| Loading state | Progress bar visible while initial load; `LoadState.Loading` drives `MovieListUiState.Loading`. |
+| Error state | Error message + retry button; `LoadState.Error` and `MovieListUiState.Error(message)`. |
 | Retry | Retry button calls `movieAdapter.retry()`; error state shows message and retry. |
-| Empty state | `text_empty` and `MovieListUiState.isEmpty` when refresh completes with zero items. |
+| Empty state | `text_empty` and `MovieListUiState.Empty` when refresh completes with zero items. |
 | Pull-to-refresh | `SwipeRefreshLayout`; refresh triggers `movieAdapter.refresh()`. |
 
 ### Screen 2 — Details
@@ -37,8 +37,8 @@ Submission for the Android Developer Technical Assignment: a small app that disp
 | Description | Summary (HTML stripped) from API. |
 | Additional metadata | Rating, language, premiered. |
 | Pass data OR fetch via endpoint | **Fetch via endpoint** — see [Detail screen decision](#detail-screen-decision-pass-data-vs-fetch-via-endpoint) below. |
-| Loading state | Progress bar; `MovieDetailUiState.isLoading`. |
-| Error state | Error message + retry button; content hidden. |
+| Loading state | Progress bar; `MovieDetailUiState.Loading`. |
+| Error state | Error message + retry button; `MovieDetailUiState.Error(message)`. |
 
 ### Technical requirements (mandatory)
 
@@ -48,7 +48,7 @@ Submission for the Android Developer Technical Assignment: a small app that disp
 
 ### Extra feature (one chosen)
 
-- **Pagination** — Implemented with **Paging 3**: `MoviePagingSource` loads pages via `getMoviesPage(page)`; list uses `PagingDataAdapter` and `LoadState` for loading/error/empty and pull-to-refresh. Data is `cachedIn(viewModelScope)` in the list ViewModel.
+- **Pagination** — Implemented with **Paging 3**: `MoviePagingSource` loads pages via `getMoviesPage(page)`; list uses `PagingDataAdapter` and `LoadState` for loading/error/empty and pull-to-refresh. List data is provided via `LiveData<PagingData<Movie>>` from `GetPagedMoviesUseCase`, backed by `Pager.liveData` in the repository and cached in the ViewModel with `.cachedIn(viewModelScope)`.
 
 ---
 
@@ -70,9 +70,9 @@ Submission for the Android Developer Technical Assignment: a small app that disp
 
 **Loading and error handling**
 
-- **Loading:** `loadMovie(id)` sets `isLoading = true`; fragment shows progress bar, hides content and error.
-- **Success:** State updated with `movie`; fragment shows image, title, description, metadata.
-- **Error:** State updated with `errorMessage`; fragment shows message and retry button; retry calls `loadMovie(args.movieId)` again.
+- **Loading:** `loadMovie(id)` emits `MovieDetailUiState.Loading`; fragment shows progress bar, hides content and error.
+- **Success:** Emits `MovieDetailUiState.Success(movie)`; fragment shows image, title, description, metadata.
+- **Error:** Emits `MovieDetailUiState.Error(message)`; fragment shows message and retry button; retry calls `loadMovie(args.movieId)` again.
 - All outcomes are reflected in `MovieDetailUiState`; no silent failures.
 
 ---
@@ -89,8 +89,8 @@ Dependencies point inward (presentation → domain ← data). ViewModels depend 
 
 ### State management
 
-- **List:** `MovieListUiState` (loading, errorMessage, isEmpty) + Paging `LoadState` for list data and refresh/retry/empty.
-- **Detail:** `MovieDetailUiState` (loading, errorMessage, movie) with explicit loading and error paths.
+- **List:** `MovieListUiState` sealed class (`Loading`, `Content`, `Empty`, `Error(message)`) + Paging `LoadState` for list data and refresh/retry/empty. Fragment uses `when(state)` for exhaustive handling.
+- **Detail:** `MovieDetailUiState` sealed class (`Loading`, `Success(movie)`, `Error(message)`). Fragment uses `when(state)` for exhaustive handling.
 
 ### Networking
 
@@ -121,7 +121,7 @@ Public, no API key required for basic use; REST/JSON; fits list + detail and Pag
 | Networking | Retrofit + Gson | Moshi or kotlinx.serialization; sealed error types. |
 | Errors | `try/catch` in ViewModel | Sealed class (e.g. `NetworkError`, `NotFound`) for UI messaging. |
 | Offline | No persistence | Room + RemoteMediator for offline list/detail. |
-| List state | LiveData + Paging | Flow from use case + `cachedIn` (already used for data). |
+| List state | LiveData + Paging (no Flow) | Flow from use case + `cachedIn` if Flow were allowed. |
 | Detail | Fetch by ID + Coil cache | In-memory cache for recently viewed details. |
 
 ---
