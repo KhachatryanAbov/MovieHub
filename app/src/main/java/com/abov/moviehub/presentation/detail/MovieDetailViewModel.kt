@@ -25,9 +25,7 @@ class MovieDetailViewModel @Inject constructor(
                 val movie = getMovieDetailUseCase(id)
                 _uiState.value = MovieDetailUiState.Success(movie)
             } catch (e: Exception) {
-                _uiState.value = MovieDetailUiState.Error(
-                    e.message ?: "Unable to load movie details"
-                )
+                _uiState.value = MovieDetailUiState.Error(e)
             }
         }
     }

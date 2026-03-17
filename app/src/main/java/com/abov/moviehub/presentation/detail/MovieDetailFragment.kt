@@ -14,6 +14,8 @@ import coil.memory.MemoryCache
 import com.abov.moviehub.R
 import com.abov.moviehub.databinding.FragmentMovieDetailBinding
 import dagger.hilt.android.AndroidEntryPoint
+import retrofit2.HttpException
+import java.net.UnknownHostException
 
 @AndroidEntryPoint
 class MovieDetailFragment : Fragment() {
@@ -96,8 +98,16 @@ class MovieDetailFragment : Fragment() {
                 progressBar.isVisible = false
                 layoutError.isVisible = true
                 contentScroll.isVisible = false
-                textError.text = state.message
+                textError.text = throwableToMessage(state.throwable)
             }
+        }
+    }
+
+    private fun throwableToMessage(t: Throwable): String {
+        return when (t) {
+            is UnknownHostException -> getString(R.string.error_no_internet)
+            is HttpException -> getString(R.string.error_server_format, t.code())
+            else -> getString(R.string.error_generic_message)
         }
     }
 

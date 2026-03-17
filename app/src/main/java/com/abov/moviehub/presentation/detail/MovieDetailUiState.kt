@@ -5,5 +5,5 @@ import com.abov.moviehub.domain.model.Movie
 sealed class MovieDetailUiState {
     object Loading : MovieDetailUiState()
     data class Success(val movie: Movie) : MovieDetailUiState()
-    data class Error(val message: String) : MovieDetailUiState()
+    data class Error(val throwable: Throwable) : MovieDetailUiState()
 }

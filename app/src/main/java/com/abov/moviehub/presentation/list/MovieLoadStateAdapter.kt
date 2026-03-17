@@ -9,13 +9,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.abov.moviehub.databinding.ItemLoadStateBinding
 
 class MovieLoadStateAdapter(
-    private val retry: () -> Unit
+    private val retry: () -> Unit,
+    private val errorMessage: (Throwable) -> String
 ) : LoadStateAdapter<MovieLoadStateAdapter.LoadStateViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, loadState: LoadState): LoadStateViewHolder {
         val binding =
             ItemLoadStateBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return LoadStateViewHolder(binding, retry)
+        return LoadStateViewHolder(binding, retry, errorMessage)
     }
 
     override fun onBindViewHolder(holder: LoadStateViewHolder, loadState: LoadState) {
@@ -24,7 +25,8 @@ class MovieLoadStateAdapter(
 
     class LoadStateViewHolder(
         private val binding: ItemLoadStateBinding,
-        retry: () -> Unit
+        retry: () -> Unit,
+        private val errorMessage: (Throwable) -> String
     ) : RecyclerView.ViewHolder(binding.root) {
 
         init {
@@ -38,7 +40,7 @@ class MovieLoadStateAdapter(
             textError.isVisible = isError
 
             if (loadState is LoadState.Error) {
-                textError.text = loadState.error.localizedMessage ?: textError.text
+                textError.text = errorMessage(loadState.error)
             }
         }
     }
