@@ -3,8 +3,6 @@ package com.abov.moviehub.di
 import com.abov.moviehub.data.remote.ApiService
 import com.abov.moviehub.data.repository.MovieRepositoryImpl
 import com.abov.moviehub.domain.repository.MovieRepository
-import com.abov.moviehub.domain.usecase.GetMovieDetailUseCase
-import com.abov.moviehub.domain.usecase.GetPagedMoviesUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -50,12 +48,4 @@ object AppModule {
     @Singleton
     fun provideMovieRepository(apiService: ApiService): MovieRepository =
         MovieRepositoryImpl(apiService)
-
-    @Provides
-    fun provideGetPagedMoviesUseCase(repository: MovieRepository): GetPagedMoviesUseCase =
-        GetPagedMoviesUseCase(repository)
-
-    @Provides
-    fun provideGetMovieDetailUseCase(repository: MovieRepository): GetMovieDetailUseCase =
-        GetMovieDetailUseCase(repository)
 }
