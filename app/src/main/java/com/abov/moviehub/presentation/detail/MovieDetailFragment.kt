@@ -2,7 +2,6 @@ package com.abov.moviehub.presentation.detail
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import androidx.core.text.HtmlCompat
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
@@ -99,9 +98,7 @@ class MovieDetailFragment : Fragment() {
         textRating.text = getString(R.string.movies_rating_format, ratingText)
         textLanguage.text = movie.language.orFallback(fallback)
         textPremiered.text = movie.premiered.orFallback(fallback)
-        textSummary.text = movie.summary
-            ?.let { HtmlCompat.fromHtml(it, HtmlCompat.FROM_HTML_MODE_LEGACY).trim() }
-            ?: ""
+        textSummary.text = state.displaySummary
     }
 
     override fun onDestroyView() {
