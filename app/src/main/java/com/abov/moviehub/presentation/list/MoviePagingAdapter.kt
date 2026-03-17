@@ -15,8 +15,11 @@ class MoviePagingAdapter(
 ) : PagingDataAdapter<Movie, MoviePagingAdapter.MovieViewHolder>(MOVIE_COMPARATOR) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
-        val binding = ItemMovieBinding.inflate(LayoutInflater.from(parent.context),
-            parent, false)
+        val binding = ItemMovieBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
         return MovieViewHolder(binding, onMovieClick)
     }
 
@@ -29,13 +32,23 @@ class MoviePagingAdapter(
         private val onMovieClick: (Movie) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
 
+        private var currentMovie: Movie? = null
+
+        init {
+            binding.root.setOnClickListener {
+                currentMovie?.let(onMovieClick)
+            }
+        }
+
         fun bind(movie: Movie) {
-            binding.root.setOnClickListener { onMovieClick(movie) }
+            currentMovie = movie
+
             binding.imagePoster.load(movie.imageMediumUrl ?: movie.imageOriginalUrl) {
                 crossfade(true)
                 placeholder(R.drawable.ic_placeholder)
                 error(R.drawable.ic_placeholder)
             }
+
             binding.textTitle.text = movie.name
 
             val ctx = binding.root.context
@@ -45,7 +58,6 @@ class MoviePagingAdapter(
 
             binding.textRating.text =
                 ctx.getString(R.string.movies_rating_format, ratingText)
-
             binding.textPremiered.text =
                 ctx.getString(R.string.movies_premiered_format, premieredText)
         }
