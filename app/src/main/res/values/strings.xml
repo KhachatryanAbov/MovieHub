@@ -31,5 +31,6 @@
     <string name="error_generic_message">Something went wrong</string>
     <string name="error_no_internet">No internet connection</string>
     <string name="error_server_format">Server error (%1$d)</string>
+    <string name="error_timeout">Request timed out. Please try again.</string>
 
 </resources>
